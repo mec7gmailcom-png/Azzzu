@@ -28,76 +28,108 @@
     .card-body .sub { color: rgba(255,255,255,0.45); font-size: 0.85rem; margin-bottom: 1rem; }
     .card-footer { display: flex; align-items: center; justify-content: space-between; }
     .price { font-family: 'Bebas Neue', cursive; font-size: 1.8rem; letter-spacing: 0.05em; }
-    .buy-btn { background: #fff; color: #000; border: none; padding: 0.55rem 1.2rem; border-radius: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.15s, background 0.15s; }
+    .buy-btn { background: #fff; color: #000; border: none; padding: 0.55rem 1.2rem; border-radius: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.15s; }
     .buy-btn:hover { transform: scale(1.07); background: #e0e0e0; }
-    .soon-btn { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.4); border: none; padding: 0.55rem 1.2rem; border-radius: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: not-allowed; }
-    .footer { border-top: 1px solid rgba(255,255,255,0.08); text-align: center; padding: 2.5rem; color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+    .soon-btn { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); border: none; padding: 0.55rem 1.2rem; border-radius: 0.75rem; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem; cursor: not-allowed; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 200; display: flex; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 2rem 1rem; }
+    .modal { background: #111; border: 1px solid rgba(255,255,255,0.1); border-radius: 1.5rem; max-width: 700px; width: 100%; padding: 2rem; position: relative; }
+    .modal h2 { font-family: 'Bebas Neue', cursive; font-size: 2rem; margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+    .modal h3 { font-size: 1.1rem; font-weight: 600; margin: 1.5rem 0 0.5rem; color: #fff; }
+    .modal p, .modal li { color: rgba(255,255,255,0.65); font-size: 0.9rem; line-height: 1.7; }
+    .modal ul { padding-left: 1.2rem; }
+    .modal-close { position: absolute; top: 1rem; right: 1rem; background: rgba(255,255,255,0.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
+    .footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 2.5rem; text-align: center; }
+    .footer-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; margin-bottom: 1rem; }
+    .footer-links button { background: none; border: none; color: rgba(255,255,255,0.5); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; text-decoration: underline; }
+    .footer-links button:hover { color: #fff; }
+    .footer-copy { color: rgba(255,255,255,0.25); font-size: 0.8rem; }
   </style>
 </head>
 <body>
   <div id="root"></div>
   <script type="text/babel">
+    const { useState } = React;
 
     const PRODUCTS = [
-      {
-        id: 1,
-        name: "Casquette Street Black",
-        price: 24.99,
-        image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200&auto=format&fit=crop",
-        tag: "Bestseller",
-        stripeLink: "https://buy.stripe.com/test_28EcN40TEfbN2v69ALbZe00"
-      },
-      {
-        id: 2,
-        name: "Casquette Vintage Beige",
-        price: 29.99,
-        image: "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=1200&auto=format&fit=crop",
-        tag: "Nouveau",
-        stripeLink: null
-      },
-      {
-        id: 3,
-        name: "Casquette Sport White",
-        price: 19.99,
-        image: "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?q=80&w=1200&auto=format&fit=crop",
-        tag: "Promo",
-        stripeLink: null
-      },
+      { id: 1, name: "Casquette Street Black", price: 24.99, image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200&auto=format&fit=crop", tag: "Bestseller", stripeLink: "https://buy.stripe.com/test_28EcN40TEfbN2v69ALbZe00" },
+      { id: 2, name: "Casquette Vintage Beige", price: 29.99, image: "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=1200&auto=format&fit=crop", tag: "Nouveau", stripeLink: null },
+      { id: 3, name: "Casquette Sport White", price: 19.99, image: "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?q=80&w=1200&auto=format&fit=crop", tag: "Promo", stripeLink: null },
     ];
 
     function App() {
+      const [modal, setModal] = useState(null);
+
+      const pages = {
+        mentions: {
+          title: "Mentions Legales",
+          body: "<h3>Editeur du site</h3><p>Nom : Abdeladim Nouri<br/>Ville : Gif-sur-Yvette, France<br/>Email : mec7gmail.com@gmail.com</p><h3>Hebergement</h3><p>Ce site est heberge par Netlify, Inc. 512 2nd Street, Suite 200, San Francisco, CA 94107, USA.</p><h3>Propriete intellectuelle</h3><p>L ensemble du contenu de ce site est la propriete exclusive de CAPZONE. Toute reproduction est interdite sans autorisation prealable.</p>"
+        },
+        cgv: {
+          title: "Conditions Generales de Vente",
+          body: "<h3>1. Objet</h3><p>Les presentes CGV regissent les ventes de casquettes effectuees sur le site CAPZONE par Abdeladim Nouri, domicilie a Gif-sur-Yvette.</p><h3>2. Prix</h3><p>Les prix sont indiques en euros TTC.</p><h3>3. Paiement</h3><p>Le paiement s effectue via Stripe, plateforme securisee. Les donnees bancaires ne sont pas conservees par CAPZONE.</p><h3>4. Livraison</h3><p>Les commandes sont expedies sous 3 a 5 jours ouvres.</p><h3>5. Retractation</h3><p>Vous disposez de 14 jours a compter de la reception pour retourner votre article.</p><h3>6. Contact</h3><p>mec7gmail.com@gmail.com</p>"
+        },
+        confidentialite: {
+          title: "Politique de Confidentialite",
+          body: "<h3>Donnees collectees</h3><p>Lors d une commande : nom, prenom, email, adresse de livraison.</p><h3>Utilisation</h3><p>Vos donnees sont utilisees uniquement pour traiter votre commande. Elles ne sont jamais vendues.</p><h3>Paiement</h3><p>Les paiements sont traites par Stripe. CAPZONE ne conserve aucune donnee bancaire.</p><h3>Vos droits</h3><p>Conformement au RGPD, vous pouvez demander l acces ou la suppression de vos donnees a : mec7gmail.com@gmail.com</p>"
+        },
+        retour: {
+          title: "Politique de Retour",
+          body: "<h3>Delai</h3><p>14 jours apres reception pour retourner un article.</p><h3>Conditions</h3><p>Article non porte, non lave, dans son emballage d origine. Frais de retour a la charge du client.</p><h3>Remboursement</h3><p>Effectue sous 14 jours apres reception du retour.</p><h3>Contact</h3><p>mec7gmail.com@gmail.com</p>"
+        }
+      };
+
       return (
-        <div className="shop">
-          <header className="header">
-            <div className="logo">CAPZONE</div>
-          </header>
-          <section className="hero">
-            <h2>Les meilleures<br />casquettes</h2>
-            <p>Streetwear, vintage et sport. Trouve le style parfait pour ton outfit.</p>
-          </section>
-          <section className="grid">
-            {PRODUCTS.map(product => (
-              <div className="card" key={product.id}>
-                <div className="card-img-wrap">
-                  <img src={product.image} alt={product.name} />
-                  <span className="card-tag">{product.tag}</span>
-                </div>
-                <div className="card-body">
-                  <h3>{product.name}</h3>
-                  <p className="sub">Casquette tendance premium.</p>
-                  <div className="card-footer">
-                    <span className="price">{product.price.toFixed(2)}€</span>
-                    {product.stripeLink
-                      ? <a href={product.stripeLink} target="_blank" className="buy-btn">🛒 Acheter</a>
-                      : <button className="soon-btn">Bientôt</button>
-                    }
+        <>
+          <div className="shop">
+            <header className="header">
+              <div className="logo">CAPZONE</div>
+            </header>
+            <section className="hero">
+              <h2>Les meilleures<br />casquettes</h2>
+              <p>Streetwear, vintage et sport. Trouve le style parfait pour ton outfit.</p>
+            </section>
+            <section className="grid">
+              {PRODUCTS.map(product => (
+                <div className="card" key={product.id}>
+                  <div className="card-img-wrap">
+                    <img src={product.image} alt={product.name} />
+                    <span className="card-tag">{product.tag}</span>
+                  </div>
+                  <div className="card-body">
+                    <h3>{product.name}</h3>
+                    <p className="sub">Casquette tendance premium.</p>
+                    <div className="card-footer">
+                      <span className="price">{product.price.toFixed(2)}€</span>
+                      {product.stripeLink
+                        ? <a href={product.stripeLink} target="_blank" className="buy-btn">Acheter</a>
+                        : <button className="soon-btn">Bientot</button>
+                      }
+                    </div>
                   </div>
                 </div>
+              ))}
+            </section>
+            <footer className="footer">
+              <div className="footer-links">
+                <button onClick={() => setModal('mentions')}>Mentions legales</button>
+                <button onClick={() => setModal('cgv')}>CGV</button>
+                <button onClick={() => setModal('confidentialite')}>Confidentialite</button>
+                <button onClick={() => setModal('retour')}>Retours</button>
               </div>
-            ))}
-          </section>
-          <footer className="footer">© 2026 CAPZONE — Tous droits réservés</footer>
-        </div>
+              <div className="footer-copy">2026 CAPZONE - Tous droits reserves</div>
+            </footer>
+          </div>
+
+          {modal && (
+            <div className="modal-overlay" onClick={() => setModal(null)}>
+              <div className="modal" onClick={e => e.stopPropagation()}>
+                <button className="modal-close" onClick={() => setModal(null)}>X</button>
+                <h2>{pages[modal].title}</h2>
+                <div dangerouslySetInnerHTML={{__html: pages[modal].body}} />
+              </div>
+            </div>
+          )}
+        </>
       );
     }
 
