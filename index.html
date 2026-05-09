@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
@@ -21,7 +21,7 @@
     .card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.07); border-radius: 1.5rem; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
     .card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
     .card-img-wrap { position: relative; }
-    .card-img-wrap img { width: 100%; height: 280px; object-fit: cover; display: block; }
+    .card-img-wrap img { width: 100%; height: 280px; object-fit: cover; display: block; background: #1a1a1a; }
     .card-tag { position: absolute; top: 12px; left: 12px; background: #e63946; color: #fff; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 999px; }
     .card-body { padding: 1.4rem; }
     .card-body h3 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.3rem; }
@@ -51,31 +51,19 @@
     const { useState } = React;
 
     const PRODUCTS = [
-      { id: 1, name: "Casquette Street Black", price: 24.99, image: "https://images.unsplash.com/photo-1521369909029-2afed882baee?q=80&w=1200&auto=format&fit=crop", tag: "Bestseller", stripeLink: "https://buy.stripe.com/test_28EcN40TEfbN2v69ALbZe00" },
-      { id: 2, name: "Casquette Vintage Beige", price: 29.99, image: "https://images.unsplash.com/photo-1514327605112-b887c0e61c0a?q=80&w=1200&auto=format&fit=crop", tag: "Nouveau", stripeLink: null },
-      { id: 3, name: "Casquette Sport White", price: 19.99, image: "https://images.unsplash.com/photo-1575428652377-a2d80e2277fc?q=80&w=1200&auto=format&fit=crop", tag: "Promo", stripeLink: null },
+      { id: 1, name: "Casquette Vintage Washed Noire", price: 24.99, image: "https://i.imgur.com/WtrxWcL.jpeg", tag: "Bestseller", stripeLink: "https://buy.stripe.com/test_28EcN40TEfbN2v69ALbZe00" },
+      { id: 2, name: "Casquette NY Noir et Or", price: 29.99, image: "https://i.imgur.com/ccmvXHT.jpeg", tag: "Nouveau", stripeLink: null },
+      { id: 3, name: "Casquette Distressed Grise", price: 19.99, image: "https://i.imgur.com/MGg4Ke5.jpeg", tag: "Tendance", stripeLink: null },
     ];
 
     function App() {
       const [modal, setModal] = useState(null);
 
       const pages = {
-        mentions: {
-          title: "Mentions Legales",
-          body: "<h3>Editeur du site</h3><p>Nom : Abdeladim Nouri<br/>Ville : Gif-sur-Yvette, France<br/>Email : mec7gmail.com@gmail.com</p><h3>Hebergement</h3><p>Ce site est heberge par Netlify, Inc. 512 2nd Street, Suite 200, San Francisco, CA 94107, USA.</p><h3>Propriete intellectuelle</h3><p>L ensemble du contenu de ce site est la propriete exclusive de CAPZONE. Toute reproduction est interdite sans autorisation prealable.</p>"
-        },
-        cgv: {
-          title: "Conditions Generales de Vente",
-          body: "<h3>1. Objet</h3><p>Les presentes CGV regissent les ventes de casquettes effectuees sur le site CAPZONE par Abdeladim Nouri, domicilie a Gif-sur-Yvette.</p><h3>2. Prix</h3><p>Les prix sont indiques en euros TTC.</p><h3>3. Paiement</h3><p>Le paiement s effectue via Stripe, plateforme securisee. Les donnees bancaires ne sont pas conservees par CAPZONE.</p><h3>4. Livraison</h3><p>Les commandes sont expedies sous 3 a 5 jours ouvres.</p><h3>5. Retractation</h3><p>Vous disposez de 14 jours a compter de la reception pour retourner votre article.</p><h3>6. Contact</h3><p>mec7gmail.com@gmail.com</p>"
-        },
-        confidentialite: {
-          title: "Politique de Confidentialite",
-          body: "<h3>Donnees collectees</h3><p>Lors d une commande : nom, prenom, email, adresse de livraison.</p><h3>Utilisation</h3><p>Vos donnees sont utilisees uniquement pour traiter votre commande. Elles ne sont jamais vendues.</p><h3>Paiement</h3><p>Les paiements sont traites par Stripe. CAPZONE ne conserve aucune donnee bancaire.</p><h3>Vos droits</h3><p>Conformement au RGPD, vous pouvez demander l acces ou la suppression de vos donnees a : mec7gmail.com@gmail.com</p>"
-        },
-        retour: {
-          title: "Politique de Retour",
-          body: "<h3>Delai</h3><p>14 jours apres reception pour retourner un article.</p><h3>Conditions</h3><p>Article non porte, non lave, dans son emballage d origine. Frais de retour a la charge du client.</p><h3>Remboursement</h3><p>Effectue sous 14 jours apres reception du retour.</p><h3>Contact</h3><p>mec7gmail.com@gmail.com</p>"
-        }
+        mentions: { title: "Mentions Legales", body: "<h3>Editeur du site</h3><p>Nom : Abdeladim Nouri<br/>Ville : Gif-sur-Yvette, France<br/>Email : mec7gmail.com@gmail.com</p><h3>Hebergement</h3><p>Netlify, Inc. 512 2nd Street, San Francisco, CA 94107, USA.</p>" },
+        cgv: { title: "Conditions Generales de Vente", body: "<h3>1. Objet</h3><p>Vente de casquettes par Abdeladim Nouri, Gif-sur-Yvette.</p><h3>2. Prix</h3><p>Prix en euros TTC.</p><h3>3. Paiement</h3><p>Via Stripe, plateforme securisee.</p><h3>4. Livraison</h3><p>3 a 5 jours ouvres.</p><h3>5. Retractation</h3><p>14 jours a compter de la reception.</p><h3>Contact</h3><p>mec7gmail.com@gmail.com</p>" },
+        confidentialite: { title: "Politique de Confidentialite", body: "<h3>Donnees collectees</h3><p>Nom, email, adresse de livraison lors d une commande.</p><h3>Utilisation</h3><p>Uniquement pour traiter votre commande.</p><h3>Vos droits</h3><p>RGPD : mec7gmail.com@gmail.com</p>" },
+        retour: { title: "Politique de Retour", body: "<h3>Delai</h3><p>14 jours apres reception.</p><h3>Conditions</h3><p>Article non porte, non lave, emballage d origine.</p><h3>Remboursement</h3><p>Sous 14 jours apres reception du retour.</p><h3>Contact</h3><p>mec7gmail.com@gmail.com</p>" }
       };
 
       return (
@@ -119,7 +107,6 @@
               <div className="footer-copy">2026 CAPZONE - Tous droits reserves</div>
             </footer>
           </div>
-
           {modal && (
             <div className="modal-overlay" onClick={() => setModal(null)}>
               <div className="modal" onClick={e => e.stopPropagation()}>
